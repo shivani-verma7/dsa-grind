@@ -1,0 +1,54 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *ans=NULL, *next=NULL;
+        stack<int> s1,s2;
+        int sumCurr=0, carryOver=0, d1, d2;
+        while(l1||l2){
+            if(l1){
+                s1.push(l1->val);
+                l1=l1->next;
+            }
+            if(l2){
+                s2.push(l2->val);
+                l2=l2->next;
+            }
+        }
+        while(!s1.empty()||!s2.empty()||carryOver){
+            if(!s1.empty()){
+                d1=s1.top();
+                s1.pop();
+            }
+            else
+                d1=0;
+            if(!s2.empty()){
+                d2=s2.top();
+                s2.pop();
+            }
+            else
+                d2=0;
+            sumCurr = d1+d2+carryOver;
+            ListNode* temp = new ListNode(sumCurr%10);
+            carryOver = sumCurr/10;
+            ans=temp;
+            ans->next=next;
+            next=ans;
+        }
+        return ans;
+    }
+};
+
+/*
+Time complexity = O(n)
+Space complexity = O(n)
+*/
