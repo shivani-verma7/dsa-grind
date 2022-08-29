@@ -1,0 +1,39 @@
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        
+        stack<ListNode*> st;
+        ListNode *fast = head, *slow = head;
+                
+        while(fast && fast->next && fast->next->next){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        
+        while(slow){
+            st.push(slow);
+            slow=slow->next;
+        }
+        
+        ListNode *curr=head, *prev;
+        
+        while(!st.empty()){
+            
+            ListNode* temp = st.top();
+            st.pop();
+            if(curr==temp)
+                break;
+            prev=curr->next;
+            curr->next=temp;
+            temp->next=prev;
+            curr=prev;
+            
+        }
+        curr->next=NULL;
+        
+    }
+};
+/*
+Time complexity = O(n)
+Space complexity = O(n)
+*/
