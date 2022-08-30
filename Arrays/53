@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int currMaxSum = 0, maxSum = INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            currMaxSum += nums[i];
+            maxSum = max(maxSum, currMaxSum);
+            if(currMaxSum<0)
+                currMaxSum=0;
+        }
+        return maxSum;
+    }
+};
+/*
+Time complexity = O(n)
+Space complexity = O(1)
+*/

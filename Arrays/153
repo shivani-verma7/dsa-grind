@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int low=0, high=nums.size()-1, mid, ans;
+        while(low<=high){
+            if(low == high){
+                ans = min(ans,nums[low]);
+                break;
+            }
+            mid = low + (high-low)/2;
+            if(nums[high]>=nums[mid])
+            {
+                high = mid;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
+};
+/*
+Time complexity = O(logn)
+Space complexity = O(1)
+*/

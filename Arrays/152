@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int maxm = nums[0], minm = nums[0], ans = nums[0];
+        for(int i=1;i<nums.size();i++){
+            int temp = maxm;
+            maxm = max(nums[i], max(maxm*nums[i], minm*nums[i]));
+            minm = min(nums[i], min(minm*nums[i], temp*nums[i]));
+            ans = max(ans,maxm);
+        }
+        return ans;
+    }
+};
+/*
+Time complexity = O(n)
+Space complexity = O(1)
+*/
