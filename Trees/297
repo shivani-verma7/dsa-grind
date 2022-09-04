@@ -1,0 +1,111 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string ans = "";
+        if(!root)
+            return "[]";
+        queue<TreeNode*> q;
+        q.push(root);
+        q.push(NULL);
+        ans = "[";
+        while(!q.empty()){
+            TreeNode *T=q.front();
+            q.pop();
+            if(!T && q.empty()){
+                ans += "]";
+                break;
+            }
+            else if(!T){
+                q.push(NULL);
+                ans += "][";
+                continue;
+            }
+            int val = T->val;
+            ans += to_string(val) + "_";
+            if(val==1001)
+                continue;
+            if(T->left){
+                q.push(T->left);
+            }
+            else{
+                TreeNode *temp = new TreeNode(1001);
+                q.push(temp);
+            }
+            if(T->right){
+                q.push(T->right);
+            }
+            else{
+                TreeNode *temp = new TreeNode(1001);
+                q.push(temp);
+            }
+        }
+        return ans;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        TreeNode *T=NULL;
+        if(data=="[]")
+            return T;
+        queue<TreeNode*> q;
+        int pos = 1;
+        TreeNode *parent=NULL;
+        while(pos<=data.length()-1){
+            int posEnd = data.find("]",pos);
+            string lvl = data.substr(pos,posEnd-pos);
+            pos = posEnd + 2;
+            int posNumStart = 0;
+            //cout<<lvl<<endl;
+            while(posNumStart<=lvl.length()-1){
+                int posNumEnd = lvl.find("_",posNumStart);
+                int num1 = stoi(lvl.substr(posNumStart,posNumEnd-posNumStart));
+                //cout<<"num1: "<<num1<<endl;
+                posNumStart=posNumEnd+1;
+                TreeNode *curr;
+                if(num1==1001)
+                    curr=NULL;
+                else
+                    curr=new TreeNode(num1);
+                if(!T){
+                    T=curr;
+                    q.push(curr);
+                }
+                else{
+                    while(q.front()==NULL)
+                        q.pop();
+                    parent = q.front();
+                    q.pop();
+                    posNumEnd = lvl.find("_",posNumStart);
+                    int num2 = stoi(lvl.substr(posNumStart,posNumEnd-posNumStart));
+                    //cout<<"num2: "<<num2<<endl;
+                    posNumStart=posNumEnd+1;
+                    TreeNode *curr2;
+                    if(num2==1001)
+                        curr2=NULL;
+                    else
+                        curr2=new TreeNode(num2);
+                    parent->left = curr;
+                    parent->right = curr2;
+                    q.push(curr);
+                    q.push(curr2);
+                }
+            }
+        }
+        return T;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
