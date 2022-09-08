@@ -1,0 +1,73 @@
+class WordDictionary {
+private:
+    struct TrieNode{
+        bool isWord;
+        vector<TrieNode*> next;
+        TrieNode():isWord(false),next(vector<TrieNode*>(26,NULL)){}
+    };
+    TrieNode *T;
+    unordered_map<string,bool> cache;
+    
+    bool searchFromHere(string word, TrieNode *P,int start) {
+        TrieNode* S=P;
+        for(int i=start;i<word.length();i++){
+            if(word[i]=='.'){
+                for(int j=0;j<26;j++){
+                    if(!S->next[j])
+                        continue;
+                    if(i==word.length()-1 && S->next[j]->isWord==true)
+                        return true;
+                    else if(i==word.length()-1)
+                        continue;
+                    else{
+                        bool found = searchFromHere(word,S->next[j],i+1);
+                        if(found)
+                            return true;
+                    }
+                }
+                return false;
+            }
+            else{
+                
+                if(!S->next[word[i]-'a'])
+                    return false;
+                S=S->next[word[i]-'a'];
+            }
+        }
+        return S->isWord;
+    }
+public:
+    WordDictionary() {
+        T=new TrieNode();
+    }
+    
+    void addWord(string word) {
+        if(cache[word])
+            return;
+        cache[word]=true;
+        TrieNode *S=T;
+        for(int i=0;i<word.length();i++){
+            int index = word[i]-'a';
+            if(!S->next[index])
+                S->next[index]=new TrieNode();
+            S=S->next[index];
+        }
+        S->isWord=true;
+    }
+    
+    bool search(string word) {
+        if(cache[word])
+            return true;
+        bool ans = searchFromHere(word,T,0);
+        if(ans)
+            cache[word]=true;
+        return ans;
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */

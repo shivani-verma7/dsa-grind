@@ -1,0 +1,51 @@
+class Solution {
+private:
+    struct TrieNode{
+        string word;
+        bool isWord;
+        vector<TrieNode*> next;
+        TrieNode():word(""),isWord(false),next(vector<TrieNode*>(26,NULL)){}
+    };
+    TrieNode *T=new TrieNode();
+    void insert(string word){
+        TrieNode *s=T;
+        for(int i=0;i<word.length();i++){
+            if(!s->next[word[i]-'a'])
+                s->next[word[i]-'a']=new TrieNode();
+            s=s->next[word[i]-'a'];
+        }
+        s->isWord=true;
+        s->word=word;
+    }
+    void searchFromHere(vector<vector<char>>& board,int i,int j,vector<string> &ans,TrieNode *&P){
+        if(i>=board.size()||j>=board[0].size()||i<0||j<0)
+            return;
+        if(board[i][j]=='-')
+            return;
+        if(!P->next[board[i][j]-'a'])
+            return;
+        if(P->next[board[i][j]-'a']->isWord){
+            ans.push_back(P->next[board[i][j]-'a']->word);
+            P->next[board[i][j]-'a']->isWord=false;
+        }
+        char c = board[i][j];
+        board[i][j]='-';
+        searchFromHere(board,i-1,j,ans,P->next[c-'a']);
+        searchFromHere(board,i+1,j,ans,P->next[c-'a']);
+        searchFromHere(board,i,j-1,ans,P->next[c-'a']);
+        searchFromHere(board,i,j+1,ans,P->next[c-'a']);
+        board[i][j]=c;
+    }
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> ans;
+        for(int i=0;i<words.size();i++)
+            insert(words[i]);
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
+                searchFromHere(board,i,j,ans,T);
+            }
+        }
+        return ans;
+    }
+};

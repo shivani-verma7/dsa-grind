@@ -1,0 +1,50 @@
+class Trie {
+private:
+    struct TrieNode {
+        bool isWord;
+        vector<TrieNode*> next; 
+        TrieNode() : isWord(false), next(vector<TrieNode*>(26,NULL)) {}
+    };
+    TrieNode *T = new TrieNode();
+public:
+    void insert(string word) {
+        TrieNode *curr = T;
+        for(int i=0;i<word.length();i++){
+            int index = word[i]-'a';
+            if(!curr->next[index])
+                curr->next[index] = new TrieNode();
+            curr = curr->next[index];
+        }
+        curr->isWord = true;
+    }
+    
+    bool search(string word) {
+        TrieNode *curr = T;
+        for(int i=0;i<word.length();i++){
+            int index = word[i]-'a';
+            if(!curr->next[index])
+                return false;
+            curr = curr->next[index];
+        }
+        return curr->isWord;
+    }
+    
+    bool startsWith(string prefix) {
+        TrieNode *curr = T;
+        for(int i=0;i<prefix.length();i++){
+            int index = prefix[i]-'a';
+            if(!curr->next[index])
+                return false;
+            curr = curr->next[index];
+        }
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
