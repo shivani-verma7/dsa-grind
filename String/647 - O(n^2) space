@@ -1,0 +1,38 @@
+class Solution
+{
+public:
+    int countSubstrings(string s)
+    {
+        vector<vector<int>> isPalindrome(s.length(), vector<int>(s.length(), 0));
+        int i, j, len, count = 0;
+        for (len = 1; len <= s.length(); len++)
+        {
+            i = 0;
+            j = len - 1;
+            while (j < s.length())
+            {
+                if (i == j)
+                    isPalindrome[i][j] = 1;
+                else if (i + 1 == j)
+                {
+                    if (s[i] == s[j])
+                        isPalindrome[i][j] = 1;
+                }
+                else if (isPalindrome[i + 1][j - 1])
+                {
+                    if (s[i] == s[j])
+                        isPalindrome[i][j] = 1;
+                }
+                if (isPalindrome[i][j])
+                    count++;
+                i++;
+                j++;
+            }
+        }
+        return count;
+    }
+};
+/*
+Time complexity = O(n^2)
+Space complecity = O(n^2)
+*/

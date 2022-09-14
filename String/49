@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> ans;
+        unordered_map<string,vector<string>> mp;
+        vector<int> letters(26,0);
+        for(int i=0;i<strs.size();i++){
+            for(int j=0;j<strs[i].length();j++)
+                letters[strs[i][j]-'a']++;
+            string hash="";
+            for(int j=0;j<26;j++){
+                if(letters[j]==0)
+                    continue;
+                hash+=(char)(j+'a')+to_string(letters[j]);
+                letters[j]=0;
+            }
+            mp[hash].push_back(strs[i]);
+        }
+        for(auto it=mp.begin();it!=mp.end();it++){
+            ans.push_back(it->second);
+        }
+        return ans;
+    }
+};
