@@ -1,0 +1,13 @@
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> ans;
+        int curr = 1;
+        ans.push_back(0);
+        while(curr<=num){
+            ans.push_back(ans[curr/2] + curr%2);
+            curr++;
+        }
+        return ans;
+    }
+};
