@@ -1,0 +1,12 @@
+class Solution {
+    public int divisorSubstrings(int num, int k) {
+        int count = 0, rem, numCopy = num, divisor = (int)Math.pow(10,k);
+        while(numCopy >= Math.pow(10,k-1)){
+            rem = numCopy%divisor;
+            if(rem!= 0 && num % rem == 0)
+                count++;
+            numCopy = numCopy / 10;
+        }
+        return count;
+    }
+}

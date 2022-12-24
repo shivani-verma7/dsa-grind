@@ -1,0 +1,33 @@
+class Solution
+{
+public:
+    int characterReplacement(string s, int k)
+    {
+        int maxLen = 0;
+        map<char, int> unique;
+        for (int i = 0; i < s.length(); i++)
+        {
+            unique[s[i]] = 1;
+        }
+        for (auto it = unique.begin(); it != unique.end(); it++)
+        {
+            char curr = it->first;
+            int start = 0, end = 0, maxCurr = 0, numOthers = 0;
+            while (end < s.length())
+            {
+                if (s[end] != curr)
+                    numOthers++;
+                while (numOthers > k)
+                {
+                    if (s[start] != curr)
+                        numOthers--;
+                    start++;
+                }
+                maxCurr = max(maxCurr, end - start + 1);
+                end++;
+            }
+            maxLen = max(maxCurr, maxLen);
+        }
+        return maxLen;
+    }
+};

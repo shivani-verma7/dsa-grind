@@ -1,0 +1,40 @@
+class Solution
+{
+public:
+    string minWindow(string s, string t)
+    {
+        unordered_map<char, int> present, inWindow;
+        int n = t.length(), count = 0;
+        int start = 0, end = 0;
+        for (int i = 0; i < t.length(); i++)
+        {
+            present[t[i]]++;
+            inWindow[t[i]] = 0;
+        }
+        int minLen = INT_MAX, minStart = -1;
+        while (end < s.length())
+        {
+            char curr = s[end];
+            inWindow[curr]++;
+            if (present.find(curr) != present.end() && present[curr] >= inWindow[curr])
+                count++;
+            while (count == n)
+            {
+                if (minLen > end - start + 1)
+                {
+                    minLen = end - start + 1;
+                    minStart = start;
+                }
+                char first = s[start];
+                inWindow[first]--;
+                if (present.find(first) != present.end() && present[first] > inWindow[first])
+                    count--;
+                start++;
+            }
+            end++;
+        }
+        if (minStart == -1)
+            return "";
+        return s.substr(minStart, minLen);
+    }
+};

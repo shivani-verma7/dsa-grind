@@ -1,0 +1,20 @@
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        double currSum = 0;
+        double maxAvg, currAvg;
+        
+        for(int i=0;i<k;i++){
+            currSum = currSum + nums[i];
+        }
+        currAvg = currSum/k;
+        maxAvg = currAvg;
+        
+        for(int i=1 ; i <= nums.length-k ; i++){
+            currSum = currSum - nums[i-1] + nums[i+k-1];
+            currAvg = currSum/k;
+            if(maxAvg<currAvg)
+                maxAvg = currAvg;
+        }
+        return maxAvg;
+    }
+}
