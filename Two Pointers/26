@@ -1,0 +1,28 @@
+class Solution
+{
+public:
+    int removeDuplicates(vector<int> &nums)
+    {
+        int ind1 = 0, ind2 = 0, k = 0;
+        while (ind1 <= ind2 && ind2 < nums.size())
+        {
+            if (ind1 == ind2)
+            {
+                k++;
+                ind2++;
+            }
+            else if (nums[ind1] == nums[ind2])
+            {
+                ind2++;
+            }
+            else
+            {
+                k++;
+                ind1++;
+                nums[ind1] = nums[ind2];
+                ind2++;
+            }
+        }
+        return k;
+    }
+};

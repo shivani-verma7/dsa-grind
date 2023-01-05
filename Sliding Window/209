@@ -1,0 +1,22 @@
+class Solution
+{
+public:
+    int minSubArrayLen(int target, vector<int> &nums)
+    {
+        int start = 0, end = 0, sum = 0, length = nums.size() + 1;
+        while (start <= end && end < nums.size())
+        {
+            sum += nums[end];
+            while (sum >= target && start <= end)
+            {
+                length = min(length, end - start + 1);
+                sum = sum - nums[start];
+                start++;
+            }
+            end++;
+        }
+        if (length == nums.size() + 1)
+            return 0;
+        return length;
+    }
+};

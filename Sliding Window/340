@@ -1,0 +1,22 @@
+#include <unordered_map>
+int kDistinctChars(int k, string &str)
+{
+    int start = 0, end = 0, countDistinct = 0, len = 0;
+    unordered_map<char, int> inWindow;
+    while (end < str.length())
+    {
+        inWindow[str[end]]++;
+        if (inWindow[str[end]] == 1)
+            countDistinct++;
+        while (countDistinct > k)
+        {
+            inWindow[str[start]]--;
+            if (inWindow[str[start]] == 0)
+                countDistinct--;
+            start++;
+        }
+        len = max(len, end - start + 1);
+        end++;
+    }
+    return len;
+}

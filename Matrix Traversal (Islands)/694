@@ -1,0 +1,46 @@
+#include <unordered_map>
+#include <queue>
+#include <vector>
+int distinctIslands(int **arr, int m, int n)
+{
+    unordered_map<string, int> mp;
+    queue<pair<int, int>> q;
+    vector<vector<int>> coords = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (arr[i][j] == 1)
+            {
+                q.push(make_pair(i, j));
+                string pattern = "1";
+                while (!q.empty())
+                {
+                    int x = q.front().first, y = q.front().second;
+                    arr[x][y] = 2;
+                    q.pop();
+                    for (int k = 0; k < coords.size(); k++)
+                    {
+                        int X = x + coords[k][0], Y = y + coords[k][1];
+                        if (X >= 0 && Y >= 0 && X < m && Y < n)
+                        {
+                            if (arr[X][Y] == 0)
+                                pattern += ".";
+                            else if (arr[X][Y] == 1)
+                            {
+                                pattern += "1";
+                                q.push(make_pair(X, Y));
+                            }
+                            else
+                                pattern += "1";
+                        }
+                        else
+                            pattern += ".";
+                    }
+                }
+                mp[pattern] = 1;
+            }
+        }
+    }
+    return mp.size();
+}

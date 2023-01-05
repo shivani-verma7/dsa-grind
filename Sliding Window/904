@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        int start = 0, end = 0, count = 0, countDistinct = 0;
+        unordered_map<int,int> mp;
+        while(end < fruits.size()){
+            int fruit2 = fruits[end], fruit1 = fruits[start];
+            mp[fruit2]++;
+            if(mp[fruit2]==1)
+                countDistinct++;
+            while(countDistinct > 2 && end >= start){
+                mp[fruits[start]]--;
+                if(mp[fruits[start]]==0)
+                    countDistinct--;
+                start++;
+            }
+            count = max(count,end-start+1);
+            end++;
+        }
+        return count;
+    }
+};

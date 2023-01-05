@@ -1,0 +1,26 @@
+class Solution
+{
+public:
+    vector<int> findAnagrams(string s, string p)
+    {
+        vector<int> anagrams;
+        if (p.length() > s.length())
+            return anagrams;
+        vector<int> inWindow(26, 0), wanted(26, 0);
+        for (int i = 0; i < p.length(); i++)
+        {
+            inWindow[s[i] - 'a']++;
+            wanted[p[i] - 'a']++;
+        }
+        for (int i = 0; i < s.length() - p.length(); i++)
+        {
+            if (inWindow == wanted)
+                anagrams.push_back(i);
+            inWindow[s[i] - 'a']--;
+            inWindow[s[i + p.length()] - 'a']++;
+        }
+        if (inWindow == wanted)
+            anagrams.push_back(s.length() - p.length());
+        return anagrams;
+    }
+};

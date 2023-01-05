@@ -1,0 +1,37 @@
+class Solution
+{
+private:
+    bool isAlphanumeric(char c)
+    {
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+            return true;
+        return false;
+    }
+
+public:
+    bool isPalindrome(string s)
+    {
+        int start = 0, end = s.length() - 1;
+        while (start <= end)
+        {
+            char l = s[start], r = s[end];
+            bool checkL = isAlphanumeric(l), checkR = isAlphanumeric(r);
+            if (checkL && checkR)
+            {
+                if (toupper(l) == toupper(r))
+                {
+                    start++;
+                    end--;
+                    continue;
+                }
+                else
+                    return false;
+            }
+            if (!checkL)
+                start++;
+            if (!checkR)
+                end--;
+        }
+        return true;
+    }
+};

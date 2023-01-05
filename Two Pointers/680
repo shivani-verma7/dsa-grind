@@ -1,0 +1,37 @@
+class Solution
+{
+private:
+    bool isPalindrome(string s, int start, int end)
+    {
+        while (start <= end)
+        {
+            if (s[start] != s[end])
+                return false;
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+public:
+    bool validPalindrome(string s)
+    {
+        bool deleted = false;
+        int start = 0, end = s.length() - 1;
+        while (start <= end)
+        {
+            if (s[start] == s[end])
+            {
+                start++;
+                end--;
+            }
+            else
+            {
+                if (start == end - 1)
+                    return true;
+                return isPalindrome(s, start, end - 1) || isPalindrome(s, start + 1, end);
+            }
+        }
+        return true;
+    }
+};

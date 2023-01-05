@@ -1,0 +1,27 @@
+class Solution {
+private:
+    void calcArea(vector<vector<int>>& grid, int i, int j, int m,int n, int& currArea){
+        if(i<0||j<0||i>=m||j>=n||grid[i][j]==0)
+            return;
+        currArea++;
+        grid[i][j]=0;
+        calcArea(grid,i-1,j,m,n,currArea);
+        calcArea(grid,i+1,j,m,n,currArea);
+        calcArea(grid,i,j-1,m,n,currArea);
+        calcArea(grid,i,j+1,m,n,currArea);
+    }
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int maxArea = 0, currArea, m = grid.size(), n = grid[0].size();
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){
+                    currArea = 0;
+                    calcArea(grid,i,j,m,n,currArea);
+                    maxArea = max(maxArea, currArea);
+                }
+            }
+        }
+        return maxArea;
+    }
+};
