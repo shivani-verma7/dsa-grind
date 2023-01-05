@@ -1,0 +1,28 @@
+class Solution {
+private:
+    string getEqString(int n){
+        string eq = to_string(n);
+        sort(eq.begin(),eq.end());
+        eq.erase(remove(eq.begin(), eq.end(), '0'), eq.end());
+        return eq;
+    }
+    int calcSumSquares(string s){
+        int sum = 0;
+        for(int i=0;i<s.length();i++)
+            sum+=((s[i]-'0')*(s[i]-'0'));
+        return sum;
+    }
+public:
+    bool isHappy(int n) {
+        unordered_map<string,int> mp;
+        string nStr = getEqString(n);
+        while(nStr!="1" && mp.find(nStr)==mp.end()){
+            mp[nStr] = 1;
+            int nextN = calcSumSquares(nStr);
+            nStr = getEqString(nextN);
+        }
+        if(nStr=="1")
+            return true;
+        return false;
+    }
+};
